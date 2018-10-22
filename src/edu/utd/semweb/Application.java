@@ -7,8 +7,9 @@ public class Application {
     public static void main(String[] args){
         JenaService jenaService = new JenaService();
         try {
-            jenaService.loadData();
-        } catch (IOException e) {
+            jenaService.createRdfAirQuality();
+            jenaService.createRdfChronicDiseases();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
