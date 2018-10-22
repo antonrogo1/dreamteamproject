@@ -1,0 +1,15 @@
+PREFIX ut: <http://utdallas/semclass#>
+select * where {
+  ?s ut:statename "New York" .
+  ?s ?p ?o .
+  ?s ut:ReportYear "2013" .
+}
+
+PREFIX ut: <http://utdallas/semclass#>
+select * where {
+  ?s ut:LocationDesc "Indiana" .
+  ?s ?p ?o .
+  ?s ut:yearstart"2010" .
+}
+
+
