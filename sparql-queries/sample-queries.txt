@@ -13,3 +13,6 @@ select * where {
 }
 
 
+PREFIX ut: <http://utdallas/semclass#> select * where { ?s ut:statename ?statename . ?s ut:Value ?o .?s ut:ReportYear "2012" . }
+
+PREFIX ut: <http://utdallas/semclass#> select * where { ?s ut:statename "Texas" }
