@@ -1,0 +1,8 @@
+http://localhost:3330/rdf?
+
+
+query=select * where { ?s <http://utdallas/semclass#statename> 'New York' . ?s ?p ?o . ?s <http://utdallas/semclass#ReportYear> '2013' . }
+
+Needs to be encoded as shown below
+
+http://localhost:3330/rdf?query=select%20*%20where%20%7B%20%3Fs%20%3Chttp%3A%2F%2Futdallas%2Fsemclass%23statename%3E%20'New%20York'%20.%20%3Fs%20%3Fp%20%3Fo%20.%20%3Fs%20%3Chttp%3A%2F%2Futdallas%2Fsemclass%23ReportYear%3E%20'2013'%20.%20%7D
