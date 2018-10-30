@@ -19,6 +19,9 @@ public class DreamteamprojectApplication implements ApplicationRunner {
     @Autowired
     Csv2RdfService csv2RdfService;
 
+    @Autowired
+    DataService dataService;
+
     @Override
     public void run(ApplicationArguments args) throws Exception {
         System.out.print("Test");
@@ -29,7 +32,7 @@ public class DreamteamprojectApplication implements ApplicationRunner {
 
         jenaService.createFusekiServer();
 
-
+        //dataService.getAirQualityData(2012);
 
 
 
