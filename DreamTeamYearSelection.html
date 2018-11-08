@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Year Selector</title>
+    <style type="text/css">
+        #menu td_year { width: 50px; padding: 5px; border: solid black 1px; text-align: center; }
+        #menu td_disease {width: 100px; padding: 5px; border: solid black 1px; text-align: center; }
+        #menu table { border-collapse: collapse; border: solid black 1px; margin-bottom: 20px; }
+        #menu a { color: #000; text-decoration: none; }
+    </style>
+
+    <script type="text/javascript">
+        function updateMap(button_id, menu_type) {
+            var menu_box;
+            if(menu_type == 0) {
+                menu_box = [
+                    document.getElementById('y2012'),
+                    document.getElementById('y2013'),
+                    document.getElementById('y2014'),
+                    document.getElementById('y2015'),
+                    document.getElementById('y2016')
+                ];
+            }
+            else {
+                menu_box = [
+                    document.getElementById('d0'),
+                    document.getElementById('d1'),
+                    document.getElementById('d2')
+                ];
+            }
+            var menu_length = menu_box.length;
+            for(i=0; i<menu_length; i++) {
+                if (menu_box[i].id == button_id) {
+                    menu_box[i].setAttribute('style', 'background: #00ff9d');
+                }
+                else {
+                    menu_box[i].setAttribute('style', 'background: none');
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+<div id="menu">
+    <table>
+        <tr>
+            <td_year id="y2012" style="background: #00ff9d;"><a href="#" onclick="updateMap('y2012', 0)">2012</a></td_year>
+            <td_year id="y2013"><a href="#" onclick="updateMap('y2013', 0)">2013</a></td_year>
+            <td_year id="y2014"><a href="#" onclick="updateMap('y2014', 0)">2014</a></td_year>
+            <td_year id="y2015"><a href="#" onclick="updateMap('y2015', 0)">2015</a></td_year>
+            <td_year id="y2016"><a href="#" onclick="updateMap('y2016', 0)">2016</a></td_year>
+        </tr>
+    </table>
+    <table>
+        <tr>
+            <td_disease id="d0" style="background: #00ff9d;"><a href="#" onclick="updateMap('d0', 1)">Disease 0</a></td_disease>
+            <td_disease id="d1"><a href="#" onclick="updateMap('d1', 1)">Disease 1</a></td_disease>
+            <td_disease id="d2"><a href="#" onclick="updateMap('d2', 1)">Disease 2</a></td_disease>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
