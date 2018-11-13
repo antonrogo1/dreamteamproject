@@ -1,7 +1,47 @@
 <html>
 <head>
+    <style type="text/css">
+        #menu td_year { width: 50px; padding: 5px; border: solid black 1px; text-align: center; }
+        #menu td_disease {width: 100px; padding: 5px; border: solid black 1px; text-align: center; }
+        #menu table { border-collapse: collapse; border: solid black 1px; margin-bottom: 20px; }
+        #menu a { color: #000; text-decoration: none; }
+    </style>
+
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript">
+        function updateMap(button_id, menu_type) {
+            var menu_box;
+            if(menu_type == 0) {
+                menu_box = [
+                    document.getElementById('y2010'),
+                    document.getElementById('y2011'),
+                    document.getElementById('y2012'),
+                    document.getElementById('y2013'),
+                    document.getElementById('y2014'),
+                    document.getElementById('y2015'),
+                    document.getElementById('y2016')
+                ];
+            }
+            else {
+                menu_box = [
+                    document.getElementById('d0'),
+                    document.getElementById('d1'),
+                    document.getElementById('d2')
+                ];
+            }
+            var menu_length = menu_box.length;
+            for(i=0; i<menu_length; i++) {
+                if (menu_box[i].id == button_id) {
+                    menu_box[i].setAttribute('style', 'background: #00ff9d');
+                }
+                else {
+                    menu_box[i].setAttribute('style', 'background: none');
+                }
+            }
+        }
+    </script>
+
     <script type="text/javascript">
         google.charts.load('current', {
             'packages':['geochart'],
@@ -11,14 +51,23 @@
         });
         google.charts.setOnLoadCallback(drawRegionsMap);
 
+        let year = 2011;
+        let disease = "Asthma";
+
+        function updateYear(newYear){
+            year=newYear;
+        }
+        function updateDisease(newDisease){
+            disease=newDisease;
+        }
+
         function drawRegionsMap() {
 
             var jsonData = $.ajax({
-                url: "/airquality-data",
+                url: "/airquality-data?year=" + year,
                 dataType: "json",
                 async: false
             }).responseText;
-
 
             var data = new google.visualization.DataTable(jsonData);
 
@@ -28,14 +77,58 @@
                 displayMode: 'regions',
                 resolution: 'provinces'};
 
-            var chart = new google.visualization.GeoChart(document.getElementById('regions_div'));
+            var chart = new google.visualization.GeoChart(document.getElementById('air_quality'));
 
             chart.draw(data, options);
+
+        //
+            var jsonData2 = $.ajax({
+            url: "/disease-data?disease="+disease+"&year=" + year,
+                dataType: "json",
+                async: false
+        }).responseText;
+
+        var data2 = new google.visualization.DataTable(jsonData2);
+
+        console.log([['State', 'Select'], ['US-AL', 0], ['US-AK', 5], ['US-AR', 0], ['US-TX', 56], ['US-UT', 0] ]);
+
+        var options2 = {  region: 'US',
+            displayMode: 'regions',
+            resolution: 'provinces'};
+
+        var chart2 = new google.visualization.GeoChart(document.getElementById('disease'));
+
+        chart2.draw(data2, options2);
         }
     </script>
 </head>
 <body>
-<p>Dream Team</p>
-<div id="regions_div" style="width: 900px; height: 500px;"></div>
+<h2>Dream Team</h2>
+
+<div id="menu">
+    <table>
+        <tr>
+            <td_year id="y2010" style="background: #00ff9d;"><a href="#" onclick="updateYear(2010);drawRegionsMap();updateMap('y2010', 0)">2010</a></td_year>
+            <td_year id="y2011"><a href="#" onclick="updateYear(2011);drawRegionsMap();updateMap('y2011', 0)">2011</a></td_year>
+            <td_year id="y2012"><a href="#" onclick="updateYear(2012);drawRegionsMap();updateMap('y2012', 0)">2012</a></td_year>
+            <td_year id="y2013"><a href="#" onclick="updateYear(2013);drawRegionsMap();updateMap('y2013', 0)">2013</a></td_year>
+            <td_year id="y2014"><a href="#" onclick="updateYear(2014);drawRegionsMap()">2014</a></td_year>
+            <td_year id="y2015"><a href="#" onclick="updateMap('y2015', 0)">2015</a></td_year>
+            <td_year id="y2016"><a href="#" onclick="updateMap('y2016', 0)">2016</a></td_year>
+        </tr>
+    </table>
+    <table>
+        <tr>
+            <td_disease id="d0" style="background: #00ff9d;"><a href="#" onclick="updateDisease('Asthma');drawRegionsMap();updateMap('d0', 1)">Asthma</a></td_disease>
+            <td_disease id="d1"><a href="#" onclick="updateDisease('Cancer');drawRegionsMap();updateMap('d1', 1)">Cancer</a></td_disease>
+            <td_disease id="d2"><a href="#" onclick="updateDisease('Chronic Kidney Disease');drawRegionsMap();updateMap('d2', 1)">Chronic Kidney Disease</a></td_disease>
+            <td_disease id="d2"><a href="#" onclick="updateDisease('Chronic Obstructive Pulmonary Disease');drawRegionsMap();updateMap('d3', 1)">Chronic Obstructive Pulmonary Disease</a></td_disease>
+            <td_disease id="d2"><a href="#" onclick="updateDisease('Cardiovascular Disease');drawRegionsMap();updateMap('d4', 1)">Cardiovascular Disease</a></td_disease>
+        </tr>
+    </table>
+</div>
+
+<div id="air_quality" style="width: 900px; height: 500px;"></div>
+<div id="disease" style="width: 900px; height: 500px;"></div>
 </body>
 </html>

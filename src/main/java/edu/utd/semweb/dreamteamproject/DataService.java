@@ -1,6 +1,7 @@
 package edu.utd.semweb.dreamteamproject;
 
 import edu.utd.semweb.dreamteamproject.restmodel.domain.StateAirQuality;
+import edu.utd.semweb.dreamteamproject.restmodel.domain.StateDiseaseReport;
 import edu.utd.semweb.dreamteamproject.restmodel.domaintest.Column;
 import edu.utd.semweb.dreamteamproject.restmodel.domaintest.Row;
 import edu.utd.semweb.dreamteamproject.restmodel.domaintest.RowPart;
@@ -22,19 +23,19 @@ public class DataService {
 
     public TableObject getAirQualityData(int year) {
 
-        year = 2012;
+
 
         FusekiResponse fusekiResponse = fusekiHttpQueryService.getAirQialityForYear(Integer.toString(year));
 
-        List<FusekiResponseBinding> fusekiResponseBindings = fusekiResponse.getResults().getBindings();
+        List<FusekiResponseBinding> fusekiResponseBindingAirQualities = fusekiResponse.getResults().getBindings();
 
         HashMap<String, StateAirQuality> stateAirQualityHashMap = new HashMap<>();
 
-        for(FusekiResponseBinding fusekiResponseBinding : fusekiResponseBindings ){
-            String stateName = fusekiResponseBinding.getStatename().getValue();
-            String airQuality = fusekiResponseBinding.getAirvalue().getValue();
+        for(FusekiResponseBinding fusekiResponseBindingAirQuality : fusekiResponseBindingAirQualities){
+            String stateName = fusekiResponseBindingAirQuality.getStatename().getValue();
+            String airQuality = fusekiResponseBindingAirQuality.getAirvalue().getValue();
 
-            if(stateAirQualityHashMap.containsKey("stateName")){
+            if(stateAirQualityHashMap.containsKey(stateName)){
                 StateAirQuality stateAirQuality =  stateAirQualityHashMap.get(stateName);
                 stateAirQuality.getStateAirQualityList().add(Double.parseDouble(airQuality));
             } else {
@@ -87,6 +88,94 @@ public class DataService {
 
             RowPart rowPart2 = new RowPart();
             rowPart2.setV(stateAirQuality.getAverageAirQuality());
+
+            RowPart[] rowParts = new RowPart[2];
+            rowParts[0] = rowPart1;
+            rowParts[1] = rowPart2;
+
+            row.setC(rowParts);
+
+            rows[rowCount] = row;
+            rowCount++;
+        }
+
+        tableObject.setRows(rows);
+
+        return tableObject;
+    }
+
+
+    public TableObject getDiseasesData(String disease,int year) {
+
+        FusekiResponse fusekiResponse = fusekiHttpQueryService.getDiseaseReportForYear(disease, Integer.toString(year));
+
+        List<FusekiResponseBinding> fusekiResponseBindingDiseases = fusekiResponse.getResults().getBindings();
+
+        HashMap<String, StateDiseaseReport> stateDiseaseHashMap = new HashMap<>();
+
+        for(FusekiResponseBinding fusekiResponseBindingDisease : fusekiResponseBindingDiseases){
+            String stateName = fusekiResponseBindingDisease.getStatename().getValue();
+            String diseaseCases = fusekiResponseBindingDisease.getDatavalue().getValue();
+            String datavalueUnit = fusekiResponseBindingDisease.getDatavalueUnit().getValue();
+
+            if(stateDiseaseHashMap.containsKey("stateName")){
+                StateDiseaseReport stateDiseaseReport =  stateDiseaseHashMap.get(stateName);
+                ((StateDiseaseReport) stateDiseaseReport).getStateDiseaseReportValueList().add(Double.parseDouble(diseaseCases));
+            } else {
+                StateDiseaseReport stateDiseaseReport = new StateDiseaseReport();
+                stateDiseaseReport.setStateName(stateName);
+                stateDiseaseReport.setStatePostalCode(this.getStatePostalCode(stateName));
+                try{
+                    stateDiseaseReport.getStateDiseaseReportValueList().add(Double.parseDouble(diseaseCases));
+                }
+                catch (Exception e){
+                    stateDiseaseReport.getStateDiseaseReportValueList().add(0.0);
+                }
+                stateDiseaseReport.setDatavalueUnit(datavalueUnit);
+                stateDiseaseHashMap.put(stateName, stateDiseaseReport);
+            }
+
+        }
+
+        TableObject tableObject = this.generateDiseasesReportTableObject(new ArrayList<>(stateDiseaseHashMap.values()));
+
+        System.out.println("String");
+
+        return tableObject;
+    }
+
+    private TableObject generateDiseasesReportTableObject(List<StateDiseaseReport> stateDiseaseReportList){
+
+        TableObject tableObject = new TableObject();
+
+        Column column = new Column();
+        column.setLabel("State");
+        column.setType("string");
+
+        Column column2 = new Column();
+        column2.setLabel("Select");
+        column2.setType("number");
+
+
+        Column[] columns = new Column[2];
+        columns[0] = column;
+        columns[1] = column2;
+
+        tableObject.setCols(columns);
+
+
+        Row[] rows = new Row[stateDiseaseReportList.size()];
+
+        int rowCount = 0;
+        for(StateDiseaseReport stateDiseaseReport : stateDiseaseReportList) {
+
+            Row row = new Row();
+
+            RowPart rowPart1 = new RowPart();
+            rowPart1.setV(stateDiseaseReport.getStatePostalCode());
+
+            RowPart rowPart2 = new RowPart();
+            rowPart2.setV(stateDiseaseReport.getAverageReportedDiseaseCases());
 
             RowPart[] rowParts = new RowPart[2];
             rowParts[0] = rowPart1;

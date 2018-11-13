@@ -5,14 +5,12 @@ select * where {
   ?s ut:ReportYear "2013" .
 }
 
-PREFIX ut: <http://utdallas/semclass#>
-select * where {
-  ?s ut:LocationDesc "Indiana" .
-  ?s ?p ?o .
-  ?s ut:yearstart"2010" .
-}
+
 
 
 PREFIX ut: <http://utdallas/semclass#> select * where { ?s ut:statename ?statename . ?s ut:Value ?o .?s ut:ReportYear "2012" . }
 
 PREFIX ut: <http://utdallas/semclass#> select * where { ?s ut:statename "Texas" }
+
+
+PREFIX ut: <http://utdallas/semclass#> select * where {  ?s ut:LocationDesc "Indiana" .  ?s ?p ?o .  ?s ut:yearstart"2010" .}

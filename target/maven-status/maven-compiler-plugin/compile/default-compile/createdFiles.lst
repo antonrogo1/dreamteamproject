@@ -1,6 +1,7 @@
 edu\utd\semweb\dreamteamproject\restmodel\domaintest\RowPart.class
 edu\utd\semweb\dreamteamproject\Csv2RdfService$ChronicDiseasesHeaders.class
 edu\utd\semweb\dreamteamproject\FusekiHttpQueryService.class
+edu\utd\semweb\dreamteamproject\restmodel\domain\StateDiseaseReport.class
 edu\utd\semweb\dreamteamproject\restmodel\domaintest\TableObject.class
 edu\utd\semweb\dreamteamproject\restmodel\fuseki\FusekiResponseBindingPart.class
 edu\utd\semweb\dreamteamproject\controller\AppRestController.class
