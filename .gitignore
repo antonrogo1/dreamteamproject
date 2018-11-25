@@ -6,3 +6,7 @@
 MyDatabases/Dataset1/
 
 Lab1_2_a514933
+
+*.jar
+
+target/

@@ -1,136 +1,216 @@
 <html>
 <head>
-    <style type="text/css">
-        #menu td_year { width: 50px; padding: 5px; border: solid black 1px; text-align: center; }
-        #menu td_disease {width: 100px; padding: 5px; border: solid black 1px; text-align: center; }
-        #menu table { border-collapse: collapse; border: solid black 1px; margin-bottom: 20px; }
-        #menu a { color: #000; text-decoration: none; }
-    </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script type="text/javascript">
-        function updateMap(button_id, menu_type) {
-            var menu_box;
-            if(menu_type == 0) {
-                menu_box = [
-                    document.getElementById('y2010'),
-                    document.getElementById('y2011'),
-                    document.getElementById('y2012'),
-                    document.getElementById('y2013'),
-                    document.getElementById('y2014'),
-                    document.getElementById('y2015'),
-                    document.getElementById('y2016')
-                ];
-            }
-            else {
-                menu_box = [
-                    document.getElementById('d0'),
-                    document.getElementById('d1'),
-                    document.getElementById('d2'),
-                    document.getElementById('d3'),
-                    document.getElementById('d4')
-                ];
-            }
-            var menu_length = menu_box.length;
-            for(i=0; i<menu_length; i++) {
-                if (menu_box[i].id == button_id) {
-                    menu_box[i].setAttribute('style', 'background: #00ff9d');
-                }
-                else {
-                    menu_box[i].setAttribute('style', 'background: none');
-                }
-            }
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+            integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+            crossorigin="anonymous"></script>
+</head>
+
+<body>
+<div class="container-fluid">
+    <h2>Semantic Web Project:Air Quality vs Chronic Illnesses</h2>
+    <h5>Dream Team: Kavya Kurup, Christopher McLatchy,Anton Rogozhnikov</h5>
+
+    <div class="row m-1">
+        <div id="yearSelection" class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-secondary active">
+                <input type="radio" name="options" autocomplete="off" value="2010" checked>2010
+            </label>
+            <label class="btn btn-secondary">
+                <input type="radio" name="options" autocomplete="off" value="2011">2011
+            </label>
+            <label class="btn btn-secondary">
+                <input type="radio" name="options" autocomplete="off" value="2012">2012
+            </label>
+            <label class="btn btn-secondary">
+                <input type="radio" name="options" autocomplete="off" value="2013">2013
+            </label>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col border border-info rounded m-1">
+            <div class="row">
+                <div class="ml-1">Air Quality Measures</div>
+            </div>
+            <div class="row">
+                <div id="air_quality" style="width: 97%;"></div>
+            </div>
+            <div class="row">Micograms per cubic meter</div>
+        </div>
+        <div class="col border border-info rounded m-1">
+
+            <div class="row">
+                <div class="ml-1" id="illnessheader">Illness:Chronic Obstructive Pulmonary Disease</div>
+            </div>
+            <div class="row">
+                <div id="disease" style="width: 97%;"></div>
+            </div>
+            <div class="row" id="diseaselegend">Hospitalization for chronic obstructive pulmonary disease aged >= 65 years (cases per 1,000)</div>
+            <div class="row">
+                <div id="illnessSelection" class="btn-group btn-group-toggle flex-wrap" data-toggle="buttons">
+                    <label class="btn btn-info active">
+                        <input type="radio" name="options" autocomplete="off" value="Chronic Obstructive Pulmonary Disease" checked>Chronic
+                        Obstructive<br />Pulmonary Disease
+                    </label>
+                    <label class="btn btn-info">
+                        <input type="radio" name="options" autocomplete="off" value="Cancer">Cancer
+                    </label>
+                    <label class="btn btn-info">
+                        <input type="radio" name="options" autocomplete="off" value="Asthma" >Asthma
+                    </label>
+                    <label class="btn btn-info">
+                        <input type="radio" name="options" autocomplete="off" value="Chronic Kidney Disease">Chronic Kidney<br/>
+                        Disease
+                    </label>
+                    <label class="btn btn-info">
+                        <input type="radio" name="options" autocomplete="off" value="Cardiovascular Disease">Cardiovascular
+                        Disease
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h5>Data Sources</h5>
+    <div class="row">
+        <div class="col">
+            <button type="button" class="btn btn-primary">Download Air Qulaity CSV</button>
+            <button type="button" class="btn btn-primary">Download Air Qulaity RDF</button>
+            <button type="button" class="btn btn-primary">Download Air Qulaity TTL</button>
+        <a type="button" class="btn btn-primary mr-5"  target="_blank" href="https://catalog.data.gov/dataset/air-quality-measures-on-the-national-environmental-health-tracking-network">Visit related Data.gov</a>
+        </div>
+        <div class="col">
+            <button type="button" class="btn btn-primary">Chronic Diseases CSV</button>
+            <button type="button" class="btn btn-primary">Chronic Diseases RDF</button>
+            <button type="button" class="btn btn-primary">Chronic Diseases TTL</button>
+            <a type="button" class="btn btn-primary" target="_blank" href="https://catalog.data.gov/dataset/u-s-chronic-disease-indicators-cdi">Visit related Data.gov</a>
+        </div>
+    </div>
+
+
+</div>
+</body>
+
+
+<script type="text/javascript">
+
+    $("#yearSelection :input").change(function () {
+        updateYear(this.value);
+        drawRegionsMap();
+        console.log(this.value); // points to the clicked input button
+    });
+
+    $("#illnessSelection :input").change(function () {
+        updateDisease(this.value);
+        drawRegionsMap();
+        $("#illnessheader").html("Illness:" + this.value);
+        console.log(this.value); // points to the clicked input button
+    });
+
+    google.charts.load('current', {
+        'packages': ['geochart'],
+        // Note: you will need to get a mapsApiKey for your project.
+        // See: https://developers.google.com/chart/interactive/docs/basic_load_libs#load-settings
+        'mapsApiKey': 'AIzaSyAn38MKUR-p3raeSguve23KuqU7MeKEtCc'
+    });
+    google.charts.setOnLoadCallback(drawRegionsMap);
+
+    let airYear = 2010;
+    let illnessYear = 2010;
+    let disease = "Chronic Obstructive Pulmonary Disease";
+    let illnessReportType = "Hospitalization for chronic obstructive pulmonary disease as first-listed diagnosis among Medicare-eligible persons aged >= 65 years";
+
+    function updateYear(newYear) {
+        year = newYear;
+        airYear = newYear;
+        illnessYear = newYear;
+    }
+
+    function updateDisease(newDisease) {
+        disease = newDisease;
+        if(disease == "Asthma"){
+            illnessReportType="Asthma mortality rate";
+            $("#diseaselegend").html(illnessReportType + " (cases per 1,000,000)" );
         }
-    </script>
-
-    <script type="text/javascript">
-        google.charts.load('current', {
-            'packages':['geochart'],
-            // Note: you will need to get a mapsApiKey for your project.
-            // See: https://developers.google.com/chart/interactive/docs/basic_load_libs#load-settings
-            'mapsApiKey': 'AIzaSyAn38MKUR-p3raeSguve23KuqU7MeKEtCc'
-        });
-        google.charts.setOnLoadCallback(drawRegionsMap);
-
-        let year = 2011;
-        let disease = "Asthma";
-
-        function updateYear(newYear){
-            year=newYear;
+        else if(disease == "Cancer"){
+            illnessReportType="Cancer of the lung and bronchus, incidence";
+            illnessYear = "2010";
+            $("#diseaselegend").html(illnessReportType + " (cases per 100,000)" );
         }
-        function updateDisease(newDisease){
-            disease=newDisease;
+        else if(disease == "Chronic Kidney Disease"){
+            illnessReportType="Incidence of treated end-stage renal disease";
+            $("#diseaselegend").html(illnessReportType + " (cases per 1,000,000)" );
+        }
+        else if(disease == "Chronic Obstructive Pulmonary Disease"){
+            illnessReportType="Hospitalization for chronic obstructive pulmonary disease as first-listed diagnosis among Medicare-eligible persons aged >= 65 years";
+            $("#diseaselegend").html("Hospitalization for chronic obstructive pulmonary disease aged >= 65 years (cases per 1,000)" );
+        }
+        else if(disease == "Cardiovascular Disease"){
+            illnessReportType="Mortality from cerebrovascular disease (stroke)";
+            $("#diseaselegend").html(illnessReportType + " (cases per 10,000)" );
+        }
+        else if(disease == "Overarching Conditions"){
+            illnessReportType="Premature mortality among adults aged 45-64 years";
+            $("#diseaselegend").html(illnessReportType + " (cases per 100,000)" );
+        }
+    }
+
+    function drawRegionsMap() {
+
+        if(disease == "Cancer"){
+            illnessYear = "2010";
         }
 
-        function drawRegionsMap() {
 
-            var jsonData = $.ajax({
-                url: "/airquality-data?year=" + year,
-                dataType: "json",
-                async: false
-            }).responseText;
+        var jsonData = $.ajax({
+            url: "/airquality-data?year=" + airYear,
+            dataType: "json",
+            async: false
+        }).responseText;
 
-            var data = new google.visualization.DataTable(jsonData);
+        var data = new google.visualization.DataTable(jsonData);
 
-            console.log([['State', 'Select'], ['US-AL', 0], ['US-AK', 5], ['US-AR', 0], ['US-TX', 56], ['US-UT', 0] ]);
 
-            var options = {  region: 'US',
-                displayMode: 'regions',
-                resolution: 'provinces'};
+        var options = {
+            region: 'US',
+            colorAxis: {colors: ['#F2EFEA', '#FF7451']},
+            displayMode: 'regions',
+            resolution: 'provinces'
+        };
 
-            var chart = new google.visualization.GeoChart(document.getElementById('air_quality'));
+        var chart = new google.visualization.GeoChart(document.getElementById('air_quality'));
 
-            chart.draw(data, options);
+        chart.draw(data, options);
 
         //
-            var jsonData2 = $.ajax({
-            url: "/disease-data?disease="+disease+"&year=" + year,
-                dataType: "json",
-                async: false
+        var jsonData2 = $.ajax({
+            url: "/disease-data?disease=" + disease + "&year=" + illnessYear + "&illnessReportType=" + illnessReportType,
+            dataType: "json",
+            async: false
         }).responseText;
 
         var data2 = new google.visualization.DataTable(jsonData2);
 
-        console.log([['State', 'Select'], ['US-AL', 0], ['US-AK', 5], ['US-AR', 0], ['US-TX', 56], ['US-UT', 0] ]);
-
-        var options2 = {  region: 'US',
+        var options2 = {
+            region: 'US',
+            colorAxis: {colors: ['#F2EFEA', '#10707f']},
             displayMode: 'regions',
-            resolution: 'provinces'};
+            resolution: 'provinces'
+        };
 
         var chart2 = new google.visualization.GeoChart(document.getElementById('disease'));
 
         chart2.draw(data2, options2);
-        }
-    </script>
-</head>
-<body>
-<h2>Dream Team</h2>
+    }
+</script>
 
-<div id="menu">
-    <table>
-        <tr>
-            <td_year id="y2010" style="background: #00ff9d;"><a href="#" onclick="updateYear(2010);drawRegionsMap();updateMap('y2010', 0)">2010</a></td_year>
-            <td_year id="y2011"><a href="#" onclick="updateYear(2011);drawRegionsMap();updateMap('y2011', 0)">2011</a></td_year>
-            <td_year id="y2012"><a href="#" onclick="updateYear(2012);drawRegionsMap();updateMap('y2012', 0)">2012</a></td_year>
-            <td_year id="y2013"><a href="#" onclick="updateYear(2013);drawRegionsMap();updateMap('y2013', 0)">2013</a></td_year>
-            <td_year id="y2014"><a href="#" onclick="updateYear(2014);drawRegionsMap();updateMap('y2014', 0)">2014</a></td_year>
-            <td_year id="y2015"><a href="#" onclick="updateMap('y2015', 0)">2015</a></td_year>
-            <td_year id="y2016"><a href="#" onclick="updateMap('y2016', 0)">2016</a></td_year>
-        </tr>
-    </table>
-    <table>
-        <tr>
-            <td_disease id="d0" style="background: #00ff9d;"><a href="#" onclick="updateDisease('Asthma');drawRegionsMap();updateMap('d0', 1)">Asthma</a></td_disease>
-            <td_disease id="d1"><a href="#" onclick="updateDisease('Cancer');drawRegionsMap();updateMap('d1', 1)">Cancer</a></td_disease>
-            <td_disease id="d2"><a href="#" onclick="updateDisease('Chronic Kidney Disease');drawRegionsMap();updateMap('d2', 1)">Chronic Kidney Disease</a></td_disease>
-            <td_disease id="d2"><a href="#" onclick="updateDisease('Chronic Obstructive Pulmonary Disease');drawRegionsMap();updateMap('d3', 1)">Chronic Obstructive Pulmonary Disease</a></td_disease>
-            <td_disease id="d2"><a href="#" onclick="updateDisease('Cardiovascular Disease');drawRegionsMap();updateMap('d4', 1)">Cardiovascular Disease</a></td_disease>
-        </tr>
-    </table>
-</div>
-
-<div id="air_quality" style="width: 900px; height: 500px;"></div>
-<div id="disease" style="width: 900px; height: 500px;"></div>
-</body>
 </html>

@@ -2,10 +2,10 @@ package edu.utd.semweb.dreamteamproject;
 
 import edu.utd.semweb.dreamteamproject.restmodel.domain.StateAirQuality;
 import edu.utd.semweb.dreamteamproject.restmodel.domain.StateDiseaseReport;
-import edu.utd.semweb.dreamteamproject.restmodel.domaintest.Column;
-import edu.utd.semweb.dreamteamproject.restmodel.domaintest.Row;
-import edu.utd.semweb.dreamteamproject.restmodel.domaintest.RowPart;
-import edu.utd.semweb.dreamteamproject.restmodel.domaintest.TableObject;
+import edu.utd.semweb.dreamteamproject.restmodel.googlevistable.Column;
+import edu.utd.semweb.dreamteamproject.restmodel.googlevistable.Row;
+import edu.utd.semweb.dreamteamproject.restmodel.googlevistable.RowPart;
+import edu.utd.semweb.dreamteamproject.restmodel.googlevistable.TableObject;
 import edu.utd.semweb.dreamteamproject.restmodel.fuseki.FusekiResponse;
 import edu.utd.semweb.dreamteamproject.restmodel.fuseki.FusekiResponseBinding;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +22,6 @@ public class DataService {
     FusekiHttpQueryService fusekiHttpQueryService;
 
     public TableObject getAirQualityData(int year) {
-
-
 
         FusekiResponse fusekiResponse = fusekiHttpQueryService.getAirQialityForYear(Integer.toString(year));
 
@@ -105,9 +103,9 @@ public class DataService {
     }
 
 
-    public TableObject getDiseasesData(String disease,int year) {
+    public TableObject getDiseasesData(String disease,int year, String illnessReportType) {
 
-        FusekiResponse fusekiResponse = fusekiHttpQueryService.getDiseaseReportForYear(disease, Integer.toString(year));
+        FusekiResponse fusekiResponse = fusekiHttpQueryService.getDiseaseReportForYear(disease, Integer.toString(year), illnessReportType);
 
         List<FusekiResponseBinding> fusekiResponseBindingDiseases = fusekiResponse.getResults().getBindings();
 
@@ -120,16 +118,16 @@ public class DataService {
 
             if(stateDiseaseHashMap.containsKey("stateName")){
                 StateDiseaseReport stateDiseaseReport =  stateDiseaseHashMap.get(stateName);
-                ((StateDiseaseReport) stateDiseaseReport).getStateDiseaseReportValueList().add(Double.parseDouble(diseaseCases));
+                ((StateDiseaseReport) stateDiseaseReport).getStateIllnessReportValueList().add(Double.parseDouble(diseaseCases));
             } else {
                 StateDiseaseReport stateDiseaseReport = new StateDiseaseReport();
                 stateDiseaseReport.setStateName(stateName);
                 stateDiseaseReport.setStatePostalCode(this.getStatePostalCode(stateName));
                 try{
-                    stateDiseaseReport.getStateDiseaseReportValueList().add(Double.parseDouble(diseaseCases));
+                    stateDiseaseReport.getStateIllnessReportValueList().add(Double.parseDouble(diseaseCases));
                 }
                 catch (Exception e){
-                    stateDiseaseReport.getStateDiseaseReportValueList().add(0.0);
+                    stateDiseaseReport.getStateIllnessReportValueList().add(0.0);
                 }
                 stateDiseaseReport.setDatavalueUnit(datavalueUnit);
                 stateDiseaseHashMap.put(stateName, stateDiseaseReport);
@@ -175,7 +173,7 @@ public class DataService {
             rowPart1.setV(stateDiseaseReport.getStatePostalCode());
 
             RowPart rowPart2 = new RowPart();
-            rowPart2.setV(stateDiseaseReport.getAverageReportedDiseaseCases());
+            rowPart2.setV(stateDiseaseReport.getAverageReportedIllnessCases());
 
             RowPart[] rowParts = new RowPart[2];
             rowParts[0] = rowPart1;

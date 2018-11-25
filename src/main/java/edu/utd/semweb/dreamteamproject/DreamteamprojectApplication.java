@@ -24,21 +24,20 @@ public class DreamteamprojectApplication implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        System.out.print("Test");
+        System.out.println("Application Started");
 
-       //csv2RdfService.generateRdfFromCsvAirQuality();
-       //csv2RdfService.generateRdfFromCsvChronicDiseases();
+//        System.out.println("Generating AirQuality dataset RDF and TTL");
+//        csv2RdfService.generateRdfFromCsvAirQuality();
+//        System.out.println("Finished Generating AirQuality dataset RDF and TTL");
+//        System.out.println("Generating Illness dataset RDF and TTL");
+//        csv2RdfService.generateRdfFromCsvChronicDiseases();
+//        System.out.println("Finished Generating Illness dataset RDF and TTL");
 
-
+        System.out.println("Initializing Fuseki Service");
         jenaService.createFusekiServer();
+        System.out.println("Finished Initializing Fuseki Service");
 
         //dataService.getAirQualityData(2012);
-
-
-
-
-
-
 
     }
 }

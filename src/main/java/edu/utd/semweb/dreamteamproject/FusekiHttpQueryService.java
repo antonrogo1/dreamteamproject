@@ -31,13 +31,32 @@ public class FusekiHttpQueryService {
         return fusekiResponse;
     }
 
-    public FusekiResponse getDiseaseReportForYear(String disease, String year) {
+    public FusekiResponse getDiseaseReportForYear(String illness, String year, String illnessReportType) {
 
         RestTemplate restTemplate = new RestTemplate();
 
+//        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("http://localhost:3330/rdf")
+//                .queryParam("query",
+//                        "PREFIX ut: <http://utdallas/semclass#> select ?statename ?disease ?datavalueUnit ?datavalue where {  ?s ut:LocationDesc ?statename . ?s ut:Topic \""+disease+"\" . ?s ut:DataValueUnit ?datavalueUnit .  ?s ut:DataValue ?datavalue . ?s ut:yearstart \""+year+"\" .} ");
+
+        String dataValueType = "Age-adjusted Rate";
+        if(illness.equals("Asthma"))
+            dataValueType = "Age-adjusted Rate";
+        else if(illness.equals("Cancer"))
+            dataValueType = "Average Annual Age-adjusted Rate";
+        else if(illness.equals("Chronic Kidney Disease"))
+            dataValueType = "Adjusted by age, sex, race and ethnicity";
+        else if(illness.equals("Chronic Obstructive Pulmonary Disease"))
+            dataValueType = "Age-adjusted Rate";
+        else if(illness.equals("Chronic Obstructive Pulmonary Disease"))
+            dataValueType = "Age-adjusted Rate";
+        else if(illness.equals("Overarching Conditions"))
+            dataValueType = "Age-adjusted Rate";
+
+
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("http://localhost:3330/rdf")
                 .queryParam("query",
-                        "PREFIX ut: <http://utdallas/semclass#> select ?statename ?disease ?datavalueUnit ?datavalue where {  ?s ut:LocationDesc ?statename . ?s ut:Topic \""+disease+"\" . ?s ut:DataValueUnit ?datavalueUnit .  ?s ut:DataValue ?datavalue . ?s ut:yearstart \""+year+"\" .} ");
+                        "PREFIX ut: <http://utdallas/semclass#> select ?statename ?disease ?datavalueUnit ?datavalue where {  ?s ut:LocationDesc ?statename . ?s ut:Topic \""+illness+"\" . ?s ut:DataValueUnit ?datavalueUnit .  ?s ut:DataValue ?datavalue . ?s ut:yearstart\""+year+"\" . ?s ut:IllnessReportType \""+illnessReportType+"\" . ?s ut:DataValueType \""+dataValueType+"\" .} ");
 
         URI uri = builder.build().toUri();
 

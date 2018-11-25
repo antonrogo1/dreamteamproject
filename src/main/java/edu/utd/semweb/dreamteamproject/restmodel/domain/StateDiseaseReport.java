@@ -13,17 +13,19 @@ public class StateDiseaseReport {
 
     String stateName;
     String statePostalCode;
-    String disease;
+    String illness;
+    String illnessReportType;   // csv - Question column
     String datavalueUnit;
-    List<Double> stateDiseaseReportValueList = new ArrayList<>();
+    String datavalueType;
+    List<Double> stateIllnessReportValueList = new ArrayList<>();
 
-    public double getAverageReportedDiseaseCases(){
+    public double getAverageReportedIllnessCases(){
 
-        DoubleSummaryStatistics stats = stateDiseaseReportValueList.stream().mapToDouble((x) -> x).summaryStatistics();
+        DoubleSummaryStatistics stats = stateIllnessReportValueList.stream().mapToDouble((x) -> x).summaryStatistics();
 
-        double averageDiseaseReports = stats.getAverage();
+        double averageIllnessReports = stats.getAverage();
 
-        return averageDiseaseReports;
+        return averageIllnessReports;
     }
 
 }

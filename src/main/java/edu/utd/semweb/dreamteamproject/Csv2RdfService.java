@@ -93,7 +93,9 @@ public class Csv2RdfService {
                 String yearStart = record.get(ChronicDiseasesHeaders.YearStart);
                 String locationDesc = record.get(ChronicDiseasesHeaders.LocationDesc);
                 String topic = record.get(ChronicDiseasesHeaders.Topic);
+                String illnessReportType = record.get(ChronicDiseasesHeaders.Question);
                 String dataValueUnit = record.get(ChronicDiseasesHeaders.DataValueUnit);
+                String dataValueType = record.get(ChronicDiseasesHeaders.DataValueType);
                 String dataValue = record.get(ChronicDiseasesHeaders.DataValue);
 
                 UUID uuid = UUID.randomUUID();
@@ -111,8 +113,16 @@ public class Csv2RdfService {
                 stmt = model.createStatement(subject, predicate, topic);
                 model.add(stmt);
 
+                predicate = model.createProperty(defaultNameSpace+ "IllnessReportType");
+                stmt = model.createStatement(subject, predicate, illnessReportType);
+                model.add(stmt);
+
                 predicate = model.createProperty(defaultNameSpace+ "DataValueUnit");
                 stmt = model.createStatement(subject, predicate, dataValueUnit);
+                model.add(stmt);
+
+                predicate = model.createProperty(defaultNameSpace+ "DataValueType");
+                stmt = model.createStatement(subject, predicate, dataValueType);
                 model.add(stmt);
 
                 predicate = model.createProperty(defaultNameSpace+ "DataValue");

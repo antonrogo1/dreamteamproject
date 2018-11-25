@@ -1,10 +1,7 @@
 package edu.utd.semweb.dreamteamproject.controller;
 
 import edu.utd.semweb.dreamteamproject.DataService;
-import edu.utd.semweb.dreamteamproject.restmodel.domaintest.Column;
-import edu.utd.semweb.dreamteamproject.restmodel.domaintest.Row;
-import edu.utd.semweb.dreamteamproject.restmodel.domaintest.RowPart;
-import edu.utd.semweb.dreamteamproject.restmodel.domaintest.TableObject;
+import edu.utd.semweb.dreamteamproject.restmodel.googlevistable.TableObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,9 +22,9 @@ public class AppRestController {
     }
 
     @GetMapping("/disease-data")
-    public TableObject greeting(@RequestParam("disease") String disease, @RequestParam("year") int year ) {
+    public TableObject greeting(@RequestParam("disease") String disease, @RequestParam("year") int year, @RequestParam("illnessReportType") String illnessReportType) {
 
-        TableObject tableObject = dataService.getDiseasesData(disease, year);
+        TableObject tableObject = dataService.getDiseasesData(disease, year, illnessReportType);
 
         return tableObject;
     }

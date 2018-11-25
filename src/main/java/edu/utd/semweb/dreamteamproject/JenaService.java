@@ -14,12 +14,14 @@ public class JenaService {
 
         //Dataset ds = TDBFactory.createDataset("MyDatabases/Dataset1");
 
-        Dataset ds = RDFDataMgr.loadDataset("ttldata/air-quality.ttl");
+        Dataset airQualityDataset = RDFDataMgr.loadDataset("ttldata/air-quality.ttl");
+        Dataset illnessDataset = RDFDataMgr.loadDataset("ttldata/chronic-diseases.ttl");
 
         //DataService dataService = new DataService(ds.asDatasetGraph());
 
         FusekiServer server = FusekiServer.create()
-                .add("/rdf", ds, false)
+                .add("/rdf", airQualityDataset, false)
+                .add("/rdf2", illnessDataset, false)
                 .verbose(true)
                 .build() ;
         server.start() ;
